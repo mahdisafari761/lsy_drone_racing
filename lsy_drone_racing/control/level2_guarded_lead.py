@@ -13,26 +13,26 @@ class Level2GuardedLead(Level2Lead):
 
     STRENGTH = 0.0
     BLIND_SPEED_GAIN = 1.1
-    LATERAL_OFFSETS = (.04, -.025, .035, .035, -.02)
-    VERTICAL_OFFSETS = (.015, 0., 0., 0., 0.)
+    LATERAL_OFFSETS = (0.04, -0.025, 0.035, 0.035, -0.02)
+    VERTICAL_OFFSETS = (0.015, 0.0, 0.0, 0.0, 0.0)
 
     def compute_control(self, obs: dict, info: dict | None = None) -> np.ndarray:
         """Shift only the neural target points, retaining the original observed frame normals."""
         adjusted = dict(obs)
         first = int(obs["gate_sequence"][0])
         if int(obs["n_gates_passed"]) == 0 and not obs["gates_visited"][first]:
-            delta = np.asarray(obs["gates_pos"])[first,:2]-np.asarray(obs["pos"])[:2]
+            delta = np.asarray(obs["gates_pos"])[first, :2] - np.asarray(obs["pos"])[:2]
             distance = np.linalg.norm(delta)
-            strength = np.clip((1.5-distance)/.7,0.,1.)
-            scale = 1.+strength*(self.BLIND_SPEED_GAIN-1.)
-            adjusted["vel"] = np.asarray(obs["vel"])*[scale,scale,1.]
+            strength = np.clip((1.5 - distance) / 0.7, 0.0, 1.0)
+            scale = 1.0 + strength * (self.BLIND_SPEED_GAIN - 1.0)
+            adjusted["vel"] = np.asarray(obs["vel"]) * [scale, scale, 1.0]
         targets = np.asarray(obs["gates_pos"]).copy()
         phase = int(obs["n_gates_passed"])
-        for index in range(phase, min(phase+2,len(obs["gate_sequence"]))):
+        for index in range(phase, min(phase + 2, len(obs["gate_sequence"]))):
             gate = int(obs["gate_sequence"][index])
             rotation = Rotation.from_quat(obs["gates_quat"][gate]).as_matrix()
-            offset = rotation[:,1]*self.LATERAL_OFFSETS[index]
-            offset += rotation[:,2]*self.VERTICAL_OFFSETS[index]
-            targets[gate] += self.STRENGTH*offset
+            offset = rotation[:, 1] * self.LATERAL_OFFSETS[index]
+            offset += rotation[:, 2] * self.VERTICAL_OFFSETS[index]
+            targets[gate] += self.STRENGTH * offset
         adjusted["gates_pos"] = targets
-        return super().compute_control(adjusted,info)
+        return super().compute_control(adjusted, info)

@@ -28,11 +28,14 @@ class Level2PhaseActor(Level2Lead):
             raise ValueError("TRAINED_PHASES must contain section indices from 0 to 4")
         self.trained_phases = frozenset(phases)
         self.base_layers = self.layers
-        with np.load(Path(__file__).parent / "policies" / self.POLICY_FILE,
-                     allow_pickle=False) as archive:
+        with np.load(
+            Path(__file__).parent / "policies" / self.POLICY_FILE, allow_pickle=False
+        ) as archive:
             self.trained_layers = [
-                (archive[f"trained_W{index}"].astype(np.float64),
-                 archive[f"trained_b{index}"].astype(np.float64))
+                (
+                    archive[f"trained_W{index}"].astype(np.float64),
+                    archive[f"trained_b{index}"].astype(np.float64),
+                )
                 for index in range(len(self.base_layers))
             ]
         for base, trained in zip(self.base_layers, self.trained_layers, strict=True):
