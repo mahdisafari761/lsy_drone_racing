@@ -55,6 +55,7 @@ find = {}
 lsy_drone_racing = [
     "envs/assets/*.xml", "envs/assets/*.png",
     "control/policies/*.npz", "control/policies/LICENSE", "control/policies/README.md",
+    "control/policies/level2_reference_LICENSE",
 ]
 
 [tool.pytest.ini_options]

@@ -18,6 +18,8 @@ c_generated_code/
 site/
 
 # pixi environments
+.tools/
+.venv/
 .pixi/*
 !.pixi/config.toml
 # ROS2 workspace build artifacts
