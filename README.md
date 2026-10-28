@@ -71,5 +71,5 @@ Competition results visible in the [competition branch](https://github.com/learn
 The competition environment always uses **difficulty level 2**.  
 If your code fails the automated tests, it is likely to encounter the same issues in our evaluation environment.  
 For full details, refer to the [documentation](https://learnsyslab.github.io/lsy_drone_racing/).
-
+-
 ---
